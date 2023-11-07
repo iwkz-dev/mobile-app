@@ -1,13 +1,35 @@
-import React from 'react';
-import { Text } from 'react-native';
+import * as React from 'react';
+import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-const App = () => {
-    return (
-        <NavigationContainer>{
-            /* Rest of your app code */
-            <Text>Hello</Text>
-        }</NavigationContainer>
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-    );
-};
-export default App;
+function HomeScreen() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', 
+    backgroundColor: "lightgrey", }}>
+      <Text>Home!</Text>
+    </View>
+  );
+}
+
+function SettingsScreen() {
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', 
+    backgroundColor: "lightgrey" }}>
+      <Text>Settings!</Text>
+    </View>
+  );
+}
+
+const Tab = createBottomTabNavigator();
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Settings" component={SettingsScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+}
