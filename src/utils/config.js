@@ -1,1 +1,1 @@
-export const url= 'https://jsonplaceholder.typicode.com/posts' //Prayer times API;
+export const url= 'https://old.iwkz.de/jdwlshalat_ibmus/' //Prayer times API;
