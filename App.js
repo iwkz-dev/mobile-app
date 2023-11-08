@@ -2,25 +2,9 @@ import * as React from 'react';
 import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', 
-    backgroundColor: "lightgrey", }}>
-      <Text>Home!</Text>
-    </View>
-  );
-}
-
-function SettingsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', 
-    backgroundColor: "lightgrey" }}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
-
+import HomeScreen from './src/screens/homeScreen';
+import CalenderScreen from './src/screens/calendarScreen';
+import ZakatDonasiScreen from './src/screens/zakatDonasiScreen';
 const Tab = createBottomTabNavigator();
 
 export default function App() {
@@ -28,7 +12,8 @@ export default function App() {
     <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
+        <Tab.Screen name="Calendar" component={CalenderScreen} />
+        <Tab.Screen name="ZakatDonasi" component={ZakatDonasiScreen}/>
       </Tab.Navigator>
     </NavigationContainer>
   );
