@@ -9,15 +9,9 @@ function HijriDateService (){
     useEffect(() => {
         fetch(`${hijriConvertURL}/${currentDate}-${currentMonthNumber}-${currentYear}`)
             .then((resp) => resp.json())
-            .then((json) => setData(json))
+            .then((json) => setHijriDate(json.data.hijri.date))
             .catch((error) => console.error(error));
-    }, [data == null ? (console.log("error")) : ( dateFromAPI(data))]);
+    }, []);
 
-    function dateFromAPI (data){
-        const temp=JSON.parse(JSON.stringify(data));
-        const curentHijri = temp.data.hijri.date;
-        console.log(curentHijri);
-        setHijriDate(curentHijri);
-    }
 }
 export default HijriDateService;
