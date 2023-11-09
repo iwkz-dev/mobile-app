@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useStore } from '../utils/state';
-
+import { currentDate, currentMonth, currentMonthNumber, currentYear} from '../services/dateServices';
 function HomeScreen() {
     const data = useStore(state => state.prayerTimes);
     const loading = useStore(state => state.loading);
+    const hijriDate = useStore(state => state.hijriDate);
     return (
         <View style={styles.container}>
             {loading ? (
                 <Text>Loading...</Text>
             ) : (
                 <View>
-                    <Text style={styles.title}>{data.date}</Text>
+                    <Text style={styles.title}>{data.date}.{currentYear}</Text>
+                    <Text style={styles.title}>{hijriDate}</Text>
                     <Text>Subuh</Text>
                     <Text>{data.subuh}</Text>
                     <Text>dzuhur</Text>
@@ -19,7 +21,7 @@ function HomeScreen() {
                     <Text>ashr</Text>
                     <Text>{data.ashr}</Text>
                     <Text>maghrib</Text>
-                    <Text>{data.maghrib}</Text>
+                    <Text>{data.ashr}</Text>
                 </View>
             )}
         </View>

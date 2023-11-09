@@ -5,5 +5,7 @@ export const useStore = create(set => ({
   setPrayerTimes: inputPrayerTimes => set({ prayerTimes: inputPrayerTimes}),
   removePrayerTimes: () => set({ prayerTimes: 0 }),
   loading: true,
-  setLoading: inputLoading => set({ loading: inputLoading})
+  setLoading: inputLoading => set({ loading: inputLoading}),
+  hijriDate: 0,
+  setHijriDate: inputDate => set({ hijriDate: inputDate}),
 }));
