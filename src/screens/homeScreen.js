@@ -3,12 +3,29 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 import { useStore } from '../utils/state';
 import { currentDate, currentMonth, currentMonthNumber, currentYear} from '../services/dateServices';
 import notifee from '@notifee/react-native';
-import {OnDisplayNotification, OnCreateTriggerNotification} from '../components/notification';
+import OnCreateTriggerNotification from '../components/notification';
+import BackgroundTimer from 'react-native-background-timer';
 function HomeScreen() {
     const data = useStore(state => state.prayerTimes);
     const loading = useStore(state => state.loading);
     const hijriDate = useStore(state => state.hijriDate);
-
+    const [test,setTest] = useState(false);
+    
+    useEffect(()=>{
+        turnONAlarm();
+    },[test])
+    function turnONAlarm(){
+        if(test==true){
+            BackgroundTimer.runBackgroundTimer(() => { 
+                //code that will be called every 3 seconds 
+                console.log("test")
+                }, 
+                3000);
+        }else{
+            BackgroundTimer.stopBackgroundTimer();
+            console.log("test is: "+test)
+        }
+    }
     return (
         <View style={styles.container}>
             {loading ? (
@@ -16,6 +33,8 @@ function HomeScreen() {
             ) : (
                 <View>
                     <Button title= "Display Notif" onPress={() => OnCreateTriggerNotification()}></Button>
+
+                    <Button title= "TEST TIMER" onPress={() => setTest(!test)}></Button>
                     <Text style={styles.title}>{data.date}.{currentYear}</Text>
                     <Text style={styles.title}>{hijriDate}</Text>
                     <Text>Subuh</Text>
