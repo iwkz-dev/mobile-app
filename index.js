@@ -15,3 +15,6 @@ export default function Main() {
     );
   }
 AppRegistry.registerComponent(appName, () => App);
+AppRegistry.registerHeadlessTask('BackgroundTimer', ()=>
+  require('BackgroundTimer'),
+);
