@@ -7,9 +7,9 @@
 
 yarn install (or npm install)
 
-## Step 2: Install dependencies
+## Step 2: Start App
 
-expo start (or npm start).
+npm start (or yarn start)
 
 ## Step 3:
 
