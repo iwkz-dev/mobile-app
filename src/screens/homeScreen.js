@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { useStore } from '../utils/state';
 import { currentDate, currentMonth, currentMonthNumber, currentYear} from '../services/dateServices';
-import notifee from '@notifee/react-native';
-import OnCreateTriggerNotification from '../components/notification';
+import { enableReminders } from '../components/notification';
 import BackgroundTimer from 'react-native-background-timer';
 function HomeScreen() {
     const data = useStore(state => state.prayerTimes);
@@ -12,7 +11,8 @@ function HomeScreen() {
     const [test,setTest] = useState(false);
     
     useEffect(()=>{
-        turnONAlarm();
+        //turnONAlarm();
+        getPrayerHour("maghrib");
     },[test])
     function turnONAlarm(){
         if(test==true){
@@ -26,13 +26,25 @@ function HomeScreen() {
             console.log("test is: "+test)
         }
     }
+    //ONLY FOR TESTING, TODO REMOVE
+    function getPrayerHour(prayerName) {
+        if(data==0){
+
+        }else{
+            const test = data[prayerName].split(":");
+            // [0] for hour [1] for minutes
+            console.log("maghrib "+data.maghrib);
+            console.log("HERE: "+test[0]);
+
+        }
+    }
     return (
         <View style={styles.container}>
             {loading ? (
                 <Text>Loading...</Text>
             ) : (
                 <View>
-                    <Button title= "Display Notif" onPress={() => OnCreateTriggerNotification()}></Button>
+                    <Button title= "Display Notif" onPress={() => enableReminders()}></Button>
 
                     <Button title= "TEST TIMER" onPress={() => setTest(!test)}></Button>
                     <Text style={styles.title}>{data.date}.{currentYear}</Text>
