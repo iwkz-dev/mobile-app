@@ -1,10 +1,25 @@
 import React from "react";
 import { Alert, Platform } from "react-native";
 import notifee, { TimestampTrigger, TriggerType, AndroidChannel, AuthorizationStatus } from '@notifee/react-native';
+import NotificationObjects from "./notificationObjects";
+import { useStore } from "../utils/state";
 
 
-async function OnCreateTriggerNotification() {
-    // FOR ANDROID 1. checks if battery optimization is enabled 
+export const enableReminders = async () => {
+    const hasPermissions = await checkPermissions();
+    if (hasPermissions) {
+        //OnCreateTriggerNotification();
+        console.log('app has Permission, Checking Optimization');
+    } else {
+        Alert.alert(
+            'Enable Notifications',
+            'To receive notifications opt in from your Settings.',
+            [{ text: 'Cancel' }, { text: 'Settings', onPress: openPermissionSettings }],
+        );
+    }
+    checkOptimization();
+};
+export async function checkOptimization() {
     const batteryOptimizationEnabled = await notifee.isBatteryOptimizationEnabled();
     if (batteryOptimizationEnabled) {
         // 2. ask your users to disable the feature
@@ -25,61 +40,11 @@ async function OnCreateTriggerNotification() {
             ],
             { cancelable: false }
         );
-    } else {
-        console.log("Notif created");
-        // Create a requiered channel for Android
-        const channelId = await notifee.createChannel({
-            id: 'test',
-            name: 'Adzan Channel',
-            sound: 'adzan',
-            vibration: true,
-            vibrationPattern: [300, 500],
-        });
-
-        //Set time for the Alarm
-        const date = new Date(Date.now());
-        date.setMinutes(date.getMinutes() + 5);
-        console.log(date.getHours() + " ; " + date.getMinutes());
-
-        // Create a time-based trigger
-        const trigger = {
-            type: TriggerType.TIMESTAMP,
-            timestamp: date.getTime(), // when notif is fired
-            //repeatFrequency: RepeatFrequency.DAILY,
-            alarmManager: {
-                allowWhileIdle: true,
-            },
-
-        };
-
-        // Create a trigger notification
-        try {
-            await notifee.createTriggerNotification(
-                {
-                    title: 'Meeting with Allah',
-                    body: 'NOW',
-                    android: {
-                        channelId,
-                        vibrationPattern: [50, 250, 250, 50],
-                        sound: 'adzan',
-                        timestamp: date.getTime(),
-                        showTimestamp: true,
-                        pressAction: {
-                            id: 'default',
-                            launchActivity: 'default',
-                        },
-                    },
-                },
-                trigger,
-            );
-        } catch (error) {
-            console.log('error: could not create trigger notification', error?.message);
-
-            throw error;
-        }
-    };
-
+    }else{
+        console.log("App optimization disabled, notif should work")
+    }
 }
+
 
 const checkPermissions = async () => {
     if (Platform.OS === 'ios') {
@@ -104,19 +69,6 @@ const disableAllReminders = async () => {
     await notifee.cancelAllNotifications();
 };
 
-export const enableReminders = async () => {
-    const hasPermissions = await checkPermissions();
-    if (hasPermissions) {
-        OnCreateTriggerNotification();
-        console.log('Here');
-    } else {
-        Alert.alert(
-            'Enable Notifications',
-            'To receive notifications opt in from your Settings.',
-            [{ text: 'Cancel' }, { text: 'Settings', onPress: openPermissionSettings }],
-        );
-    }
-};
 
 const openPermissionSettings = async () => {
     if (Platform.OS === 'ios') {

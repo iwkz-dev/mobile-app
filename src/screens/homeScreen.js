@@ -1,41 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { useStore } from '../utils/state';
-import { currentDate, currentMonth, currentMonthNumber, currentYear} from '../services/dateServices';
+import { currentDate, currentMonth, currentMonthNumber, currentYear } from '../services/dateServices';
 import { enableReminders } from '../components/notification';
 import BackgroundTimer from 'react-native-background-timer';
+import createNotificationObjects from '../components/notificationObjects';
 function HomeScreen() {
     const data = useStore(state => state.prayerTimes);
     const loading = useStore(state => state.loading);
     const hijriDate = useStore(state => state.hijriDate);
-    const [test,setTest] = useState(false);
-    
-    useEffect(()=>{
+    const [test, setTest] = useState(false);
+
+    useEffect(() => {
         //turnONAlarm();
-        getPrayerHour("maghrib");
-    },[test])
-    function turnONAlarm(){
-        if(test==true){
-            BackgroundTimer.runBackgroundTimer(() => { 
-                //code that will be called every 3 seconds 
-                console.log("test")
-                }, 
-                3000);
-        }else{
-            BackgroundTimer.stopBackgroundTimer();
-            console.log("test is: "+test)
+        setupNofifications();
+    }, [test])
+    //TESTING Create one notif object
+    function testCreateOneAlarm(prayerName) {
+        if (data == 0) {
+            console.log("Prayer time Data is empty");
+        } else {
+            const testDate = new Date(Date.now());
+            testDate.setMinutes(testDate.getMinutes() + 1);
+            testPrayerTime=testDate.getHours() + " : " + testDate.getMinutes();
+            console.log(testPrayerTime);
+            createNotificationObjects(prayerName, testPrayerTime);
         }
     }
-    //ONLY FOR TESTING, TODO REMOVE
-    function getPrayerHour(prayerName) {
-        if(data==0){
-
-        }else{
-            const test = data[prayerName].split(":");
-            // [0] for hour [1] for minutes
-            console.log("maghrib "+data.maghrib);
-            console.log("HERE: "+test[0]);
-
+    const testDate = new Date(Date.now());
+            testDate.setMinutes(testDate.getMinutes() + 0);
+            testPrayerTime=testDate.getHours() + " : " + testDate.getMinutes();
+    const testPrayerList={
+        subuh: testDate.getHours()+":"+(testDate.getMinutes()+1),
+        dzuhur: testDate.getHours()+":"+(testDate.getMinutes()+2),
+    }
+    //Iterate through keys and create object notification for each prayer time
+    function setupNofifications() {
+        if (data == 0) {
+            console.log("Prayer time Data is empty");
+            return 0
+        } else {
+            enableReminders(); //Checking for Optimization and Permissions
+            //REPLACE testPrayerList with data from useStore
+            const keys = Object.keys(testPrayerList);
+            Object.keys(testPrayerList).forEach(key => {
+                createNotificationObjects(key, testPrayerList[key]);
+            });
         }
     }
     return (
@@ -44,9 +54,9 @@ function HomeScreen() {
                 <Text>Loading...</Text>
             ) : (
                 <View>
-                    <Button title= "Display Notif" onPress={() => enableReminders()}></Button>
+                    <Button title="Display Notif" onPress={() => enableReminders()}></Button>
 
-                    <Button title= "TEST TIMER" onPress={() => setTest(!test)}></Button>
+                    <Button title="TEST TIMER" onPress={() => setTest(!test)}></Button>
                     <Text style={styles.title}>{data.date}.{currentYear}</Text>
                     <Text style={styles.title}>{hijriDate}</Text>
                     <Text>Subuh</Text>
