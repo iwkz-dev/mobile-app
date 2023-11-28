@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import { useStore } from '../utils/state';
-import { currentDate, currentMonth, currentMonthNumber, currentYear } from '../services/dateServices';
+import { currentYear } from '../services/dateServices';
 import { enableReminders } from '../components/notification';
-import BackgroundTimer from 'react-native-background-timer';
 import createNotificationObjects from '../components/notificationObjects';
 function HomeScreen() {
     const data = useStore(state => state.prayerTimes);
