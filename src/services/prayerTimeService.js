@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useStore } from '../utils/state';
 import { url } from '../utils/config';
-function PrayerTimeService () {
+function PrayerTimeService() {
 
     const setData = useStore(state => state.setPrayerTimes);
     const setLoading = useStore(state => state.setLoading);
@@ -13,5 +13,7 @@ function PrayerTimeService () {
             .catch((error) => console.error(error))
             .finally(() => setLoading(false));
     }, []);
+
 }
+
 export default PrayerTimeService;
