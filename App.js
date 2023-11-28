@@ -6,7 +6,6 @@ import CalenderScreen from './src/screens/calendarScreen';
 import ZakatDonasiScreen from './src/screens/zakatDonasiScreen';
 import PrayerTimeService from './src/services/prayerTimeService';
 import HijriDateService from './src/services/hijriDateService';
-import OnDisplayNotification from './src/components/notification';
 const Tab = createBottomTabNavigator();
 
 export default function App() {

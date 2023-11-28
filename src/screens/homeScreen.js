@@ -21,17 +21,17 @@ function HomeScreen() {
         } else {
             const testDate = new Date(Date.now());
             testDate.setMinutes(testDate.getMinutes() + 1);
-            testPrayerTime=testDate.getHours() + " : " + testDate.getMinutes();
+            testPrayerTime = testDate.getHours() + " : " + testDate.getMinutes();
             console.log(testPrayerTime);
             createNotificationObjects(prayerName, testPrayerTime);
         }
     }
     const testDate = new Date(Date.now());
-            testDate.setMinutes(testDate.getMinutes() + 0);
-            testPrayerTime=testDate.getHours() + " : " + testDate.getMinutes();
-    const testPrayerList={
-        subuh: testDate.getHours()+":"+(testDate.getMinutes()+1),
-        dzuhur: testDate.getHours()+":"+(testDate.getMinutes()+2),
+    testDate.setMinutes(testDate.getMinutes() + 0);
+    testPrayerTime = testDate.getHours() + " : " + testDate.getMinutes();
+    const testPrayerList = {
+        subuh: testDate.getHours() + ":" + (testDate.getMinutes() + 1),
+        dzuhur: testDate.getHours() + ":" + (testDate.getMinutes() + 2),
     }
     //Iterate through keys and create object notification for each prayer time
     function setupNofifications() {
@@ -52,9 +52,7 @@ function HomeScreen() {
             {loading ? (
                 <Text>Loading...</Text>
             ) : (
-                <View>
-                    <Button title="Display Notif" onPress={() => enableReminders()}></Button>
-
+                <View>                    
                     <Button title="TEST TIMER" onPress={() => setTest(!test)}></Button>
                     <Text style={styles.title}>{data.date}.{currentYear}</Text>
                     <Text style={styles.title}>{hijriDate}</Text>
