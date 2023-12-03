@@ -4,7 +4,7 @@ import notifee, { TimestampTrigger, TriggerType, AndroidChannel, AuthorizationSt
 import NotificationObjects from "./notificationObjects";
 import { useStore } from "../utils/state";
 
-
+//Checking permission to use deliver notification before checking the optimzation
 export const enableReminders = async () => {
     const hasPermissions = await checkPermissions();
     if (hasPermissions) {
@@ -19,6 +19,7 @@ export const enableReminders = async () => {
     }
     checkOptimization();
 };
+//Make sure optimization is disabled so push the alarms wont get killed by OS
 export async function checkOptimization() {
     const batteryOptimizationEnabled = await notifee.isBatteryOptimizationEnabled();
     if (batteryOptimizationEnabled) {

@@ -8,11 +8,16 @@ function HomeScreen() {
     const data = useStore(state => state.prayerTimes);
     const loading = useStore(state => state.loading);
     const hijriDate = useStore(state => state.hijriDate);
+    const setNotificationActive = useStore(state => state.setNotificationActive);
     const [test, setTest] = useState(false);
 
     useEffect(() => {
         //turnONAlarm();
-        setupNofifications();
+        if(test==true){
+            setNotificationActive(true);
+        }else{
+            setNotificationActive(false);
+        }
     }, [test])
     //TESTING Create one notif object
     function testCreateOneAlarm(prayerName) {
