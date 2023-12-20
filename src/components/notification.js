@@ -1,14 +1,40 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Alert, Platform } from "react-native";
 import notifee, { TimestampTrigger, TriggerType, AndroidChannel, AuthorizationStatus } from '@notifee/react-native';
 import NotificationObjects from "./notificationObjects";
 import { useStore } from "../utils/state";
 
+export default function CreateNotification() {
+    //Import prayer times from State
+    const data = useStore(state => state.prayerTimes);
+    const notificationActive = useStore(state => state.notificationActive);
+    const setNotificationActive = useStore(state => state.setNotificationActive);
+
+    useEffect(()=>{
+
+    }, [notificationActive])
+    testCreateOneAlarm("Subuh");
+    //TESTING Create one notif object
+    function testCreateOneAlarm(prayerName) {
+        if (data == 0) {
+            console.log("Prayer time Data is empty");
+        } else {
+            const testDate = new Date(Date.now());
+            testDate.setMinutes(testDate.getMinutes() + 1);
+            testPrayerTime = testDate.getHours() + " : " + testDate.getMinutes();
+            console.log(testPrayerTime);
+            createNotificationObjects(prayerName, testPrayerTime);
+        }
+    }
+    function setActive () {
+        setNotificationActive(!notificationActive);
+    }
+}
+
 //Checking permission to use deliver notification before checking the optimzation
 export const enableReminders = async () => {
     const hasPermissions = await checkPermissions();
     if (hasPermissions) {
-        //OnCreateTriggerNotification();
         console.log('app has Permission, Checking Optimization');
     } else {
         Alert.alert(
@@ -41,7 +67,7 @@ export async function checkOptimization() {
             ],
             { cancelable: false }
         );
-    }else{
+    } else {
         console.log("App optimization disabled, notif should work")
     }
 }

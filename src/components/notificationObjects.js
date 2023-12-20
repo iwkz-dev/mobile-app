@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import notifee, { TimestampTrigger, TriggerType, AndroidChannel, RepeatFrequency } from '@notifee/react-native';
+import notifee, { TimestampTrigger, TriggerType, AndroidChannel, RepeatFrequency, AndroidImportance } from '@notifee/react-native';
 import { enableReminders } from './notification';
 export default function createNotificationObjects(prayerName, prayerTime) {
     console.log(prayerName + ": " + prayerTime);
@@ -21,7 +21,6 @@ async function setupSubuhNotification(prayerName, prayerTime) {
     const trigger = {
         type: TriggerType.TIMESTAMP,
         timestamp: date.getTime(), // when notif is fired
-        //repeatFrequency: RepeatFrequency.DAILY,
         alarmManager: {
             allowWhileIdle: true,
         },
@@ -38,10 +37,12 @@ async function setupSubuhNotification(prayerName, prayerTime) {
     try {
         await notifee.createTriggerNotification(
             {
+                id: prayerName, // put id here to modify triger notification, it'll create a new one instead if id don't already exist
                 title: 'Waktu Sholat',
                 body: prayerName,
                 android: {
                     channelId,
+                    importance: AndroidImportance.HIGH,
                     vibrationPattern: [50, 250, 250, 50],
                     sound: 'adzan',
                     timestamp: date.getTime(),
@@ -62,7 +63,7 @@ async function setupSubuhNotification(prayerName, prayerTime) {
         throw error;
     }
 }
-async function disableSubuhNotification(notificationId) {
-    await notifee.cancelNotification(notificationId);
+export async function disableNotification(notificationId) {
+    await notifee.cancelTriggerNotification(notificationId);
 }
 

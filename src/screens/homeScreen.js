@@ -33,7 +33,6 @@ function HomeScreen() {
     }
     const testDate = new Date(Date.now());
     testDate.setMinutes(testDate.getMinutes() + 0);
-    testPrayerTime = testDate.getHours() + " : " + testDate.getMinutes();
     const testPrayerList = {
         subuh: testDate.getHours() + ":" + (testDate.getMinutes() + 1),
         dzuhur: testDate.getHours() + ":" + (testDate.getMinutes() + 2),
