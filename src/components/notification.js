@@ -1,14 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Alert, Platform } from "react-native";
 import notifee, { TimestampTrigger, TriggerType, AndroidChannel, AuthorizationStatus } from '@notifee/react-native';
-import NotificationObjects from "./notificationObjects";
-import { useStore } from "../utils/state";
 
-
+//Checking permission to use deliver notification before checking the optimzation
 export const enableReminders = async () => {
     const hasPermissions = await checkPermissions();
     if (hasPermissions) {
-        //OnCreateTriggerNotification();
         console.log('app has Permission, Checking Optimization');
     } else {
         Alert.alert(
@@ -19,6 +16,7 @@ export const enableReminders = async () => {
     }
     checkOptimization();
 };
+//Make sure optimization is disabled so push the alarms wont get killed by OS
 export async function checkOptimization() {
     const batteryOptimizationEnabled = await notifee.isBatteryOptimizationEnabled();
     if (batteryOptimizationEnabled) {
@@ -40,7 +38,7 @@ export async function checkOptimization() {
             ],
             { cancelable: false }
         );
-    }else{
+    } else {
         console.log("App optimization disabled, notif should work")
     }
 }
