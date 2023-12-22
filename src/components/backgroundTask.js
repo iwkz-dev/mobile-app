@@ -1,8 +1,9 @@
 import React from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useStore } from "../utils/state";
 import BackgroundFetch from 'react-native-background-fetch';
-import createNotificationObjects from '../components/notificationObjects';
+import { disableNotification } from "./notificationObjects";
+import createNotificationObjects from "./notificationObjects";
 
 export default function BackgroundTask() {
     const data = useStore(state => state.prayerTimes);
@@ -12,17 +13,19 @@ export default function BackgroundTask() {
         if (notificationActive == true) {
             console.log("performBackgroundSync active");
             initBackgroundFetch();
+            //setupNofifications();
         } else {
+            BackgroundFetch.stop();
             console.log("performBackgroundSync not active");
         }
     }, [notificationActive]);
-
+    
     async function initBackgroundFetch() {
         // BackgroundFetch event handler.
         const onEvent = async (taskId) => {
             console.log('[BackgroundFetch] task: ', taskId);
             // Do your background work...
-            testCreateOneAlarm();
+
             // IMPORTANT:  You must signal to the OS that your task is complete.
             BackgroundFetch.finish(taskId);
         }
@@ -46,16 +49,37 @@ export default function BackgroundTask() {
 
         console.log('[BackgroundFetch] configure status: ', status);
     }
-     //TESTING Create one notif object
-     function testCreateOneAlarm(prayerName) {
-        if (data == 0) {
-            console.log("Prayer time Data is empty");
+    function setupNofifications() {
+        if (data == null) {
+          console.log("Prayer time Data is empty");
+          return 0
         } else {
-            const testDate = new Date(Date.now());
-            testDate.setMinutes(testDate.getMinutes() + 1);
-            testPrayerTime = testDate.getHours() + " : " + testDate.getMinutes();
-            console.log(testPrayerTime);
-            createNotificationObjects(prayerName, testPrayerTime);
+          const keys = Object.keys(data);
+          //Checking for passed prayer time, so they don't get recreated
+          const currentDate = new Date();
+          console.log("Current Hours: " + currentDate.getHours() + ":" + currentDate.getMinutes());
+          //Iterate through keys and create object notification for each prayer time
+          Object.keys(data).forEach(key => {
+            if (key.toString() !== "date") {
+              const prayerTimeArray = data[key].split(":");
+              if (prayerTimeArray[0] > currentDate.getHours()) {
+                //Cancel previously created alarm before creating a new one.
+                disableNotification(key);
+                //Create alarm if the time has not passed by current time
+                createNotificationObjects(key, data[key]);
+              } else if (prayerTimeArray[0] == currentDate.getHours() && prayerTimeArray[1] > currentDate.getMinutes()) {
+                //Cancel previously created alarm before creating a new one.
+                disableNotification(key);
+                //Create alarm if the time has not passed by current time
+                createNotificationObjects(key, data[key]);
+              } else {
+                console.log("Prayer time " + key + " has passed, alarm not created")
+                //Cancel when alarm has passed
+                disableNotification(key);
+              }
+    
+            }
+          });
         }
-    }
+      }
 }

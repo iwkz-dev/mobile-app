@@ -7,11 +7,9 @@ import App from './App';
 import { name as appName } from './app.json';
 import { PaperProvider } from 'react-native-paper';
 
-import CreateNotification from './src/components/notification';
 import BackgroundFetch from "react-native-background-fetch";
 import createNotificationObjects from './src/components/notificationObjects';
 import { disableNotification } from './src/components/notificationObjects';
-import { enableReminders } from './src/components/notification';
 import { url } from './src/utils/config';
 
 export default function Main() {
@@ -47,12 +45,6 @@ let MyHeadlessTask = async (event) => {
   setupNofifications();
   
   function setupNofifications() {
-    /*  const testDate = new Date(Date.now());
-      testDate.setMinutes(testDate.getMinutes() + 0);
-      const testPrayerList = {
-        subuh: testDate.getHours() + ":" + (testDate.getMinutes() + 1),
-        dzuhur: testDate.getHours() + ":" + (testDate.getMinutes() + 2),
-      }*/
     if (responseJson == null) {
       console.log("Prayer time Data is empty");
       return 0
@@ -85,7 +77,20 @@ let MyHeadlessTask = async (event) => {
       });
     }
   }
-
+  /**
+   * //TESTING Create one notif object
+    function testCreateOneAlarm(prayerName) {
+        if (data == 0) {
+            console.log("Prayer time Data is empty");
+        } else {
+            const testDate = new Date(Date.now());
+            testDate.setMinutes(testDate.getMinutes() + 1);
+            testPrayerTime = testDate.getHours() + " : " + testDate.getMinutes();
+            console.log(testPrayerTime);
+            createNotificationObjects(prayerName, testPrayerTime);
+        }
+    }
+   */
   // Required:  Signal to native code that your task is complete.
   // If you don't do this, your app could be terminated and/or assigned
   // battery-blame for consuming too much time in background.

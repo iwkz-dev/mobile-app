@@ -32,6 +32,7 @@ async function setupSubuhNotification(prayerName, prayerTime) {
         sound: 'adzan',
         vibration: true,
         vibrationPattern: [300, 500],
+        importance: AndroidImportance.HIGH,
     });
     // Create a trigger notification
     try {
@@ -66,4 +67,7 @@ async function setupSubuhNotification(prayerName, prayerTime) {
 export async function disableNotification(notificationId) {
     await notifee.cancelTriggerNotification(notificationId);
 }
-
+export async function disableAllNotifications() {
+    await notifee.cancelTriggerNotifications();
+    console.log("Disabling all alarms")
+}

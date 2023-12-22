@@ -1,54 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, Switch } from 'react-native';
 import { useStore } from '../utils/state';
 import { currentYear } from '../services/dateServices';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { backgroundEnabled } from '../utils/storage';
+import { disableAllNotifications } from '../components/notificationObjects';
 import { enableReminders } from '../components/notification';
 import createNotificationObjects from '../components/notificationObjects';
 function HomeScreen() {
     const data = useStore(state => state.prayerTimes);
     const loading = useStore(state => state.loading);
     const hijriDate = useStore(state => state.hijriDate);
+    const notificationActive = useStore(state => state.notificationActive);
     const setNotificationActive = useStore(state => state.setNotificationActive);
-    const [test, setTest] = useState(false);
-
     useEffect(() => {
-        //turnONAlarm();
-        if(test==true){
-            setNotificationActive(true);
-        }else{
-            setNotificationActive(false);
-        }
-    }, [test])
-    //TESTING Create one notif object
-    function testCreateOneAlarm(prayerName) {
-        if (data == 0) {
-            console.log("Prayer time Data is empty");
-        } else {
-            const testDate = new Date(Date.now());
-            testDate.setMinutes(testDate.getMinutes() + 1);
-            testPrayerTime = testDate.getHours() + " : " + testDate.getMinutes();
-            console.log(testPrayerTime);
-            createNotificationObjects(prayerName, testPrayerTime);
+        retrieveData();
+    },[])
+    //Check from storage if Backgroundfetch is enabled or not 
+    retrieveData = async () => {
+        try {
+            const value = await AsyncStorage.getItem('backgroundEnabled');
+            const currentValue = JSON.parse(value); //Convert String to Boolean
+            console.log("Retrieving from storage: "+value);
+            if (currentValue !== null) {
+                setNotificationActive(currentValue); 
+            }else{
+                //console.log(typeof(Boolean(value)));
+            }
+        } catch (error) {
+            // Error retrieving data
         }
     }
-    const testDate = new Date(Date.now());
-    testDate.setMinutes(testDate.getMinutes() + 0);
-    const testPrayerList = {
-        subuh: testDate.getHours() + ":" + (testDate.getMinutes() + 1),
-        dzuhur: testDate.getHours() + ":" + (testDate.getMinutes() + 2),
-    }
-    //Iterate through keys and create object notification for each prayer time
-    function setupNofifications() {
-        if (data == 0) {
-            console.log("Prayer time Data is empty");
-            return 0
-        } else {
-            enableReminders(); //Checking for Optimization and Permissions
-            //REPLACE testPrayerList with data from useStore
-            const keys = Object.keys(testPrayerList);
-            Object.keys(testPrayerList).forEach(key => {
-                createNotificationObjects(key, testPrayerList[key]);
-            });
+    toggled = async (value) => {
+        backgroundEnabled(value)
+        setNotificationActive(value)
+        if (value==false){
+            disableAllNotifications();//Disabled all active Alarm
         }
     }
     return (
@@ -56,8 +43,16 @@ function HomeScreen() {
             {loading ? (
                 <Text>Loading...</Text>
             ) : (
-                <View>                    
-                    <Button title="TEST TIMER" onPress={() => setTest(!test)}></Button>
+                <View>
+                    
+                        {notificationActive ? (
+                            <Text>Prayer Alarms is On</Text>
+                        ) : (
+                            <Text>Prayer Alarms is Off</Text>
+                        )}
+                    
+                    
+                    <Button title="Prayer Time Alarm" onPress={() => toggled(!notificationActive)}></Button>
                     <Text style={styles.title}>{data.date}.{currentYear}</Text>
                     <Text style={styles.title}>{hijriDate}</Text>
                     <Text>Subuh</Text>
