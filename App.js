@@ -7,7 +7,7 @@ import CalenderScreen from './src/screens/calendarScreen';
 import ZakatDonasiScreen from './src/screens/zakatDonasiScreen';
 import PrayerTimeService from './src/services/prayerTimeService';
 import HijriDateService from './src/services/hijriDateService';
-import { useStore } from './src/utils/state';
+import RetrieveEvents from './src/components/calendars/agendaItems';
 import BackgroundTask from './src/components/backgroundTask';
 const Tab = createBottomTabNavigator();
 
@@ -15,6 +15,7 @@ export default function App() {
   
   return (
     <NavigationContainer>
+    <RetrieveEvents></RetrieveEvents>
     <BackgroundTask></BackgroundTask>
     <PrayerTimeService></PrayerTimeService>
     <HijriDateService></HijriDateService>
