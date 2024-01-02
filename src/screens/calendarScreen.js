@@ -3,13 +3,13 @@ import { Text, View, Alert, StyleSheet, TouchableOpacity } from 'react-native';
 import { ExpandableCalendar, LocaleConfig, CalendarProvider, AgendaList } from 'react-native-calendars'
 import { calendarURL, apiKey } from '../utils/config';
 //ToBe deleted
-import { agendaItems, getMarkedDates, test } from '../components/calendars/agendaItems';
+import { agendaItems, getMarkedDates, emptyCalendar } from '../components/calendars/agendaItems';
 import AgendaItem from '../components/calendars/AgendaItem';
 import { getTheme, themeColor, lightThemeColor } from '../components/calendars/theme';
 
 const leftArrowIcon = require('../imgs/previous.png');
 const rightArrowIcon = require('../imgs/next.png');
-const ITEMS = agendaItems;
+const ITEMS = emptyCalendar;
 
 function CalenderScreen() {
   const { weekView } = true;
@@ -58,7 +58,7 @@ function CalenderScreen() {
       <AgendaList
         sections={ITEMS}
         renderItem={renderItem}
-        avoidDateUpdates = 'false'
+        //avoidDateUpdates = 'false'
         scrollToNextEvent='false'
         sectionStyle={styles.section}
       // dayFormat={'yyyy-MM-d'}

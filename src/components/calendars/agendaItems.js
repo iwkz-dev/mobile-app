@@ -7,11 +7,11 @@ const fastDate = getPastDate(3);
 const futureDates = getFutureDates(12);
 const dates = [fastDate, today].concat(futureDates);
 export const test = [];
+export const emptyCalendar = setCalendar();
 export default function RetrieveEvents() {
     const [agendas, setAgendas] = useState({});
 
     useEffect(() => {
-        const emptyCalendar = setCalendar();
         fetch(calendarURL)
             .then((resp) => resp.json())
             .then((json) => {
@@ -36,23 +36,30 @@ export default function RetrieveEvents() {
                     const startTime = date[1].split(":")[0];
                     const endTime = event.end.dateTime.split("T")[1].split(":")[0];
                     const duration = (endTime - startTime < 0) ? (endTime - startTime + 24).toString() : (endTime - startTime).toString();
+
                     //Update Empty Calendar with dates with event
                     // Find the index of the object with the specified ID
-                    let indexToUpdate = arrayOfObjects.findIndex(obj => obj.title === date[0]);
-                    agenda.push({ title: date[0], data: [{ hour: startTime, duration: duration, title: description }] })
-                    dateWithEvent[date[0]] = { selected: true, marked: true, dotColor: 'blue' };
-                    console.log(date[0])
+                    let indexToUpdate = emptyCalendar.findIndex(obj => obj.title === date[0]);
+                    // Check if the object with the specified ID exists
+                    if (indexToUpdate !== -1) {
+                        // Update the name property of the object at the found index
+                        emptyCalendar[indexToUpdate].data = [{ hour: startTime, duration: duration+"H", title: description }];
+
+                       // console.log(emptyCalendar);
+                    }
+                    //agenda.push({ title: date[0], data: [{ hour: startTime, duration: duration, title: description }] })
+                    //dateWithEvent[date[0]] = { selected: true, marked: true, dotColor: 'blue' };
+                    //console.log(date[0])
                 });
-                setAgendas(agenda);
+                test.push(emptyCalendar);
+                //setAgendas(agenda);
                 // setMarkedDates(dateWithEvent);
+                //console.log(test)
+                console.log("EmptyCalendar length: "+emptyCalendar.length)
             })
             .catch((error) => console.error(error));
     }, []);
-    //console.log(agendas.length)
-    if (agendas.length > 0) {
-        test.push(agendas);
-    }
-    //console.log(test)
+   
 }
 function setCalendar() {
     const calendarCurrentMonth = [];
@@ -204,16 +211,16 @@ export const agendaItems = [
 ];
 
 export function getMarkedDates() {
-    console.log(test)
+    //console.log("AgendaItems: "+Object.keys(agendaItems[0].data[0]))
+    // console.log("Inside AgendaItems: "+agendaItems[0].data[0])
     const marked = {};
-    // console.log(typeof(agendaItems))
-    /*agendaItems.forEach(item => {
+    emptyCalendar.forEach(item => {
       // NOTE: only mark dates with data
       if (item.data && item.data.length > 0 && !isEmpty(item.data[0])) {
         marked[item.title] = {marked: true};
       } else {
         marked[item.title] = {disabled: true};
       }
-    });*/
-    return test;
+    });
+    return marked;
 }
