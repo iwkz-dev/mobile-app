@@ -9,6 +9,7 @@ import PrayerTimeService from './src/services/prayerTimeService';
 import HijriDateService from './src/services/hijriDateService';
 import RetrieveEvents from './src/components/calendars/agendaItems';
 import BackgroundTask from './src/components/backgroundTask';
+import PayPalButton from './src/components/paypalButton';
 const Tab = createBottomTabNavigator();
 
 export default function App() {
@@ -22,7 +23,7 @@ export default function App() {
       <Tab.Navigator>
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Calendar" component={CalenderScreen} />
-        <Tab.Screen name="ZakatDonasi" component={ZakatDonasiScreen}/>
+        <Tab.Screen name="ZakatDonasi" component={PayPalButton}/>
       </Tab.Navigator>
     </NavigationContainer>
   );
