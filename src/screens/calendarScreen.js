@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { Text, View, Alert, StyleSheet, TouchableOpacity } from 'react-native';
-import { ExpandableCalendar, LocaleConfig, CalendarProvider, AgendaList } from 'react-native-calendars'
+import { ExpandableCalendar, WeekCalendar, CalendarProvider, AgendaList } from 'react-native-calendars'
 import { calendarURL, apiKey } from '../utils/config';
 //ToBe deleted
 import { agendaItems, getMarkedDates, emptyCalendar } from '../components/calendars/agendaItems';
@@ -12,6 +12,8 @@ const rightArrowIcon = require('../imgs/next.png');
 const ITEMS = emptyCalendar;
 
 function CalenderScreen() {
+  const [agendaOn, setAgendaOn] = useState('false');
+  const today = new Date().toISOString().split('T')[0];
   const { weekView } = true;
   const marked = useRef(getMarkedDates());
   const theme = useRef(getTheme()); const todayBtnTheme = useRef({
@@ -20,46 +22,49 @@ function CalenderScreen() {
 
 
   const renderItem = useCallback(({ item }) => {
+
     return <AgendaItem item={item} />;
   }, []);
-
+  const onDateChanged = () => {
+    console.log("DTE CHANGES")
+  }
   return (
     <CalendarProvider
-      date={ITEMS[1]?.title}
-      // onDateChanged={onDateChanged}
+      date={today}
+      onDateChanged={onDateChanged}
       // onMonthChange={onMonthChange}
-      showTodayButton
+      // showTodayButton
       // disabledOpacity={0.6}
       theme={todayBtnTheme.current}
     // todayBottomMargin={16}
     >
       {weekView ? (
-        <WeekCalendar firstDay={1} markedDates={marked.current} />
+        <WeekCalendar markedDates={marked.current} disableOnPageChange={true} />
       ) : (
         <ExpandableCalendar
-          // horizontal={false}
           // hideArrows
-          // disablePan
-          // hideKnob
-          // initialPosition={ExpandableCalendar.positions.OPEN}
+          disablePan={true}
+          closeOnDayPress={false}
+          hideKnob={true}
+          initialPosition={ExpandableCalendar.positions.OPEN}
           // calendarStyle={styles.calendar}
           // headerStyle={styles.header} // for horizontal only
-          disableWeekScroll='true'
+          disableWeekScroll={true}
           theme={theme.current}
-          // disableAllTouchEventsForDisabledDays
-          firstDay={1}
+          disableAllTouchEventsForDisabledDays={true}
+          //firstDay={1}
           markedDates={marked.current}
           leftArrowImageSource={leftArrowIcon}
           rightArrowImageSource={rightArrowIcon}
         // animateScroll
-        // closeOnDayPress={false}
         />
       )}
       <AgendaList
         sections={ITEMS}
+        initialNumToRender={90}
         renderItem={renderItem}
-        //avoidDateUpdates = 'false'
-        scrollToNextEvent='false'
+        avoidDateUpdates={true}
+        scrollToNextEvent={false}
         sectionStyle={styles.section}
       // dayFormat={'yyyy-MM-d'}
       />

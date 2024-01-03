@@ -2,10 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import isEmpty from 'lodash/isEmpty';
 import { calendarURL, apiKey } from '../../utils/config';
 
-const today = new Date().toISOString().split('T')[0];
-const fastDate = getPastDate(3);
-const futureDates = getFutureDates(12);
-const dates = [fastDate, today].concat(futureDates);
+
 export const test = [];
 export const emptyCalendar = setCalendar();
 export default function RetrieveEvents() {
@@ -32,7 +29,8 @@ export default function RetrieveEvents() {
                 filteredEvents.forEach((event) => {
                     const description = event.summary;
                     const date = event.start.dateTime.split("T");
-
+                    
+                    const startTimeFormat = date[1].split(":")[0] +":"+ date[1].split(":")[1];
                     const startTime = date[1].split(":")[0];
                     const endTime = event.end.dateTime.split("T")[1].split(":")[0];
                     const duration = (endTime - startTime < 0) ? (endTime - startTime + 24).toString() : (endTime - startTime).toString();
@@ -43,7 +41,7 @@ export default function RetrieveEvents() {
                     // Check if the object with the specified ID exists
                     if (indexToUpdate !== -1) {
                         // Update the name property of the object at the found index
-                        emptyCalendar[indexToUpdate].data = [{ hour: startTime, duration: duration+"H", title: description }];
+                        emptyCalendar[indexToUpdate].data = [{ date: date[0], hour: startTimeFormat, duration: duration+"H", title: description }];
 
                        // console.log(emptyCalendar);
                     }
@@ -95,120 +93,12 @@ function setCalendar() {
     for (i = 1; i <= getTotalDays(nextYear, nextMonth); i++) [
         calendarNextMonth.push(emptyDate(datesFormat(nextYear, nextMonth, i)))
     ]
+    // 3 months are too long for the calendar, 
     const emptyCalendar = calendarPrevMonth.concat(calendarCurrentMonth, calendarNextMonth);
     return emptyCalendar;
 
 }
-function getFutureDates(numberOfDays) {
-    const array = [];
-    for (let index = 1; index <= numberOfDays; index++) {
-        let d = Date.now();
-        if (index > 8) {
-            // set dates on the next month
-            const newMonth = new Date(d).getMonth() + 1;
-            d = new Date(d).setMonth(newMonth);
-        }
-        const date = new Date(d + 864e5 * index); // 864e5 == 86400000 == 24*60*60*1000
-        const dateString = date.toISOString().split('T')[0];
-        array.push(dateString);
-    }
-    return array;
-}
-function getPastDate(numberOfDays) {
-    return new Date(Date.now() - 864e5 * numberOfDays).toISOString().split('T')[0];
-}
 
-export const agendaItems = [
-    {
-        title: dates[0],
-        data: [{ hour: '12am', duration: '1h', title: 'First Yoga' }]
-    },
-    {
-        title: dates[1],
-        data: [
-            { hour: '4pm', duration: '1h', title: 'Pilates ABC' },
-            { hour: '5pm', duration: '1h', title: 'Vinyasa Yoga' }
-        ]
-    },
-    {
-        title: dates[2],
-        data: [
-            { hour: '1pm', duration: '1h', title: 'Ashtanga Yoga' },
-            { hour: '2pm', duration: '1h', title: 'Deep Stretches' },
-            { hour: '3pm', duration: '1h', title: 'Private Yoga' }
-        ]
-    },
-    {
-        title: dates[3],
-        data: [{ hour: '12am', duration: '1h', title: 'Ashtanga Yoga' }]
-    },
-    {
-        title: dates[4],
-        data: [{}]
-    },
-    {
-        title: dates[5],
-        data: [
-            { hour: '9pm', duration: '1h', title: 'Middle Yoga' },
-            { hour: '10pm', duration: '1h', title: 'Ashtanga' },
-            { hour: '11pm', duration: '1h', title: 'TRX' },
-            { hour: '12pm', duration: '1h', title: 'Running Group' }
-        ]
-    },
-    {
-        title: dates[6],
-        data: [
-            { hour: '12am', duration: '1h', title: 'Ashtanga Yoga' }
-        ]
-    },
-    {
-        title: dates[7],
-        data: [{}]
-    },
-    {
-        title: dates[8],
-        data: [
-            { hour: '9pm', duration: '1h', title: 'Pilates Reformer' },
-            { hour: '10pm', duration: '1h', title: 'Ashtanga' },
-            { hour: '11pm', duration: '1h', title: 'TRX' },
-            { hour: '12pm', duration: '1h', title: 'Running Group' }
-        ]
-    },
-    {
-        title: dates[9],
-        data: [
-            { hour: '1pm', duration: '1h', title: 'Ashtanga Yoga' },
-            { hour: '2pm', duration: '1h', title: 'Deep Stretches' },
-            { hour: '3pm', duration: '1h', title: 'Private Yoga' }
-        ]
-    },
-    {
-        title: dates[10],
-        data: [
-            { hour: '12am', duration: '1h', title: 'Last Yoga' }
-        ]
-    },
-    {
-        title: dates[11],
-        data: [
-            { hour: '1pm', duration: '1h', title: 'Ashtanga Yoga' },
-            { hour: '2pm', duration: '1h', title: 'Deep Stretches' },
-            { hour: '3pm', duration: '1h', title: 'Private Yoga' }
-        ]
-    },
-    {
-        title: dates[12],
-        data: [
-            { hour: '12am', duration: '1h', title: 'Last Yoga' }
-        ]
-    },
-    {
-        title: dates[13],
-        data: [
-            { hour: '12am', duration: '1h', title: 'Last Yoga' }
-        ]
-    }
-];
 
 export function getMarkedDates() {
     //console.log("AgendaItems: "+Object.keys(agendaItems[0].data[0]))

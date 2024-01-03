@@ -10,21 +10,14 @@ const AgendaItem = (props) => {
     Alert.alert('Show me more');
   }, []);
 
-  const itemPressed = useCallback(() => {
-    Alert.alert(item.title);
-  }, []);
-
   if (isEmpty(item)) {
-    return (
-      <View style={styles.emptyItem}>
-        <Text style={styles.emptyItemText}>No Events Planned Today</Text>
-      </View>
-    );
+    return null;
   }
 
   return (
-    <TouchableOpacity onPress={itemPressed} style={styles.item}>
-      <View>
+    <View style={styles.item}>
+        <View>
+        <Text style={styles.itemHourText}>{item.date}</Text>
         <Text style={styles.itemHourText}>{item.hour}</Text>
         <Text style={styles.itemDurationText}>{item.duration}</Text>
       </View>
@@ -32,7 +25,7 @@ const AgendaItem = (props) => {
       <View style={styles.itemButtonContainer}>
         <Button color={'grey'} title={'Info'} onPress={buttonPressed}/>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 };
 
