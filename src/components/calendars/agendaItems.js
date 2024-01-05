@@ -5,8 +5,8 @@ import { calendarURL, apiKey } from '../../utils/config';
 
 export const test = [];
 export const emptyCalendar = setCalendar();
+export const agendas =[];
 export default function RetrieveEvents() {
-    const [agendas, setAgendas] = useState({});
 
     useEffect(() => {
         fetch(calendarURL)
@@ -24,8 +24,6 @@ export default function RetrieveEvents() {
                     );*/
                 });
                 // Convert events to a format suitable for react-native-calendars
-                const dateWithEvent = {};
-                const agenda = [];
                 filteredEvents.forEach((event) => {
                     const description = event.summary;
                     const date = event.start.dateTime.split("T");
@@ -35,24 +33,9 @@ export default function RetrieveEvents() {
                     const endTime = event.end.dateTime.split("T")[1].split(":")[0];
                     const duration = (endTime - startTime < 0) ? (endTime - startTime + 24).toString() : (endTime - startTime).toString();
 
-                    //Update Empty Calendar with dates with event
-                    // Find the index of the object with the specified ID
-                    let indexToUpdate = emptyCalendar.findIndex(obj => obj.title === date[0]);
-                    // Check if the object with the specified ID exists
-                    if (indexToUpdate !== -1) {
-                        // Update the name property of the object at the found index
-                        emptyCalendar[indexToUpdate].data = [{ date: date[0], hour: startTimeFormat, duration: duration+"H", title: description }];
-
-                       // console.log(emptyCalendar);
-                    }
-                    //agenda.push({ title: date[0], data: [{ hour: startTime, duration: duration, title: description }] })
-                    //dateWithEvent[date[0]] = { selected: true, marked: true, dotColor: 'blue' };
-                    //console.log(date[0])
+                    agendas.push({ title: date[0], data: [{ date: date[0], hour: startTimeFormat, duration: duration+" h", title: description }] })
+                  
                 });
-                test.push(emptyCalendar);
-                //setAgendas(agenda);
-                // setMarkedDates(dateWithEvent);
-                //console.log(test)
                 console.log("EmptyCalendar length: "+emptyCalendar.length)
             })
             .catch((error) => console.error(error));
@@ -104,7 +87,7 @@ export function getMarkedDates() {
     //console.log("AgendaItems: "+Object.keys(agendaItems[0].data[0]))
     // console.log("Inside AgendaItems: "+agendaItems[0].data[0])
     const marked = {};
-    emptyCalendar.forEach(item => {
+    agendas.forEach(item => {
       // NOTE: only mark dates with data
       if (item.data && item.data.length > 0 && !isEmpty(item.data[0])) {
         marked[item.title] = {marked: true};

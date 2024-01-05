@@ -34,8 +34,10 @@ const PayPalButton = () => {
             source={{ html: paypalButtonHTML }}
             allowsbackforwardnavigationgestures={true}
             ref={webViewRef}
-            style={{ flex: 1,
-                backgroundColor: "grey",}}
+            style={{
+                flex: 1,
+                backgroundColor: "grey",
+            }}
             scalesPageToFit={false}
         />
     );
