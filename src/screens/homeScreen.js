@@ -22,7 +22,7 @@ function HomeScreen() {
     }, [])
     useEffect(() => {
         createPrayerList(data);
-    })
+    },[loading])
     //Check from storage if Backgroundfetch is enabled or not 
     retrieveData = async () => {
         try {
