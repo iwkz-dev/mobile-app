@@ -26,7 +26,7 @@ function CalenderScreen() {
     return <AgendaItem item={item} />;
   }, []);
   const onDateChanged = () => {
-    console.log("DTE CHANGES")
+    console.log("DATE CHANGES")
   }
   return (
     <CalendarProvider
