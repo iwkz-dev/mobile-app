@@ -3,16 +3,15 @@ import { Text, View, Alert, StyleSheet, TouchableOpacity } from 'react-native';
 import { ExpandableCalendar, WeekCalendar, CalendarProvider, AgendaList } from 'react-native-calendars'
 import { calendarURL, apiKey } from '../utils/config';
 //ToBe deleted
-import { agendaItems, getMarkedDates, emptyCalendar } from '../components/calendars/agendaItems';
+import { agendas, getMarkedDates, emptyCalendar } from '../components/calendars/agendaItems';
 import AgendaItem from '../components/calendars/AgendaItem';
 import { getTheme, themeColor, lightThemeColor } from '../components/calendars/theme';
 
 const leftArrowIcon = require('../imgs/previous.png');
 const rightArrowIcon = require('../imgs/next.png');
-const ITEMS = emptyCalendar;
+const ITEMS = agendas;
 
 function CalenderScreen() {
-  const [agendaOn, setAgendaOn] = useState('false');
   const today = new Date().toISOString().split('T')[0];
   const { weekView } = true;
   const marked = useRef(getMarkedDates());
@@ -26,7 +25,7 @@ function CalenderScreen() {
     return <AgendaItem item={item} />;
   }, []);
   const onDateChanged = () => {
-    console.log("DTE CHANGES")
+    console.log("DATE CHANGES")
   }
   return (
     <CalendarProvider
@@ -39,7 +38,7 @@ function CalenderScreen() {
     // todayBottomMargin={16}
     >
       {weekView ? (
-        <WeekCalendar markedDates={marked.current} disableOnPageChange={true} />
+        <WeekCalendar markedDates={marked.current}  />
       ) : (
         <ExpandableCalendar
           // hideArrows
@@ -61,6 +60,7 @@ function CalenderScreen() {
       )}
       <AgendaList
         sections={ITEMS}
+        renderSectionHeader={({section}) => null }
         initialNumToRender={90}
         renderItem={renderItem}
         avoidDateUpdates={true}

@@ -62,12 +62,6 @@ const checkPermissions = async () => {
         !channel?.blocked);
 };
 
-const disableAllReminders = async () => {
-    // Disable in-app push notification setting
-    await notifee.cancelAllNotifications();
-};
-
-
 const openPermissionSettings = async () => {
     if (Platform.OS === 'ios') {
         await Linking.openSettings();

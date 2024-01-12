@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Text, View, StyleSheet } from 'react-native';
 import { useStore } from '../utils/state';
 import { url } from '../utils/config';
 function PrayerTimeService() {

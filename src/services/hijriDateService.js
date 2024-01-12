@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { hijriConvertURL } from "../utils/config";
 import { useStore } from "../utils/state";
 import { currentDate, currentMonthNumber, currentYear } from "./dateServices";
-function HijriDateService (){
+function HijriDateService() {
 
     const setHijriDate = useStore(state => state.setHijriDate);
     const [data, setData] = useState();
