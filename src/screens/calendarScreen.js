@@ -12,7 +12,6 @@ const rightArrowIcon = require('../imgs/next.png');
 const ITEMS = agendas;
 
 function CalenderScreen() {
-  const [agendaOn, setAgendaOn] = useState('false');
   const today = new Date().toISOString().split('T')[0];
   const { weekView } = true;
   const marked = useRef(getMarkedDates());
