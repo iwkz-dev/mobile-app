@@ -19,19 +19,19 @@ const slides = [
   {
     id: 1,
     title: 'Jadwal Sholat',
-    description: '“Lihat jadwal sholat melalui aplikasi"',
+    description: 'Lihat jadwal sholat melalui aplikasi',
     image: require('./src/imgs/Onboard1.png')
   },
   {
     id: 2,
     title: 'Zakat Online',
-    description: '“Bayar zakat kini mudah dan cepat"',
+    description: 'Bayar zakat kini mudah dan cepat',
     image: require('./src/imgs/Onboard2.png')
   },
   {
     id: 3,
     title: 'Notifikasi',
-    description: '“Pilih aksi notifikasi yang cocok untuk anda"',
+    description: 'Pilih aksi notifikasi yang cocok untuk anda',
     image: require('./src/imgs/Onboard3.png')
   }
 ]
@@ -57,10 +57,14 @@ export default function App() {
   const buttonLabel = (label) => {
     return(
       <View style={{
-        padding:12,       
+        padding:15, 
+        backgroundColor: COLORS.secondary,
+        borderRadius:20,
+        paddingLeft:20,
+        paddingRight:20,
       }}>
         <Text style={{
-          color: COLORS.title,
+          color: COLORS.white,
           fontWeight:'600',
           fontSize: SIZES.h4,
         }}>
@@ -76,11 +80,12 @@ export default function App() {
         data={slides}
         renderItem={({item}) => {
           return(
-            <view style={{
+            <View style={{
               flex:1,
               alignItems: 'center',
               padding: 15,
               paddingTop: 100,
+              backgroundColor: COLORS.primary,
             }}>
               <Image
               source={item.image}
@@ -92,7 +97,7 @@ export default function App() {
               />
               <Text style={{
                 fontWeight: 'bold',
-                color: COLORS.title,
+                color: COLORS.black,
                 fontSize: SIZES.h1,
               }}>
                 {item.title}
@@ -100,15 +105,15 @@ export default function App() {
               <Text style={{
                 textAlign: 'center',
                 paddingTop: 5,
-                color: COLORS.title,
+                color: COLORS.black,
               }}>
                 {item.description}
               </Text>
-            </view>
+            </View>
           )
         }}
         activeDotStyle={{
-          backgroundColor: COLORS.primary,
+          backgroundColor: COLORS.secondary,
           width:30,
         }}
         showSkipbutton
