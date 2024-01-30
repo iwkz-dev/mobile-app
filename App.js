@@ -11,7 +11,8 @@ import RetrieveEvents from './src/components/calendars/agendaItems';
 import BackgroundTask from './src/components/backgroundTask';
 import PayPalButton from './src/components/paypalButton';
 import { View, Text, Image} from "react-native";
-import { SIZES } from './src/constants/theme';
+import { COLORS, SIZES } from './src/constants/theme';
+import AppIntroSlider from "react-native-app-intro-slider";
 const Tab = createBottomTabNavigator();
 
 const slides = [
