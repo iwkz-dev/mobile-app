@@ -5,6 +5,7 @@ import { currentYear } from '../services/dateServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { backgroundEnabled } from '../utils/storage';
 import { disableAllNotifications } from '../components/notificationObjects';
+import { COLORS, SIZES } from '../constants/theme';
 function HomeScreen() {
     const data = useStore(state => state.prayerTimes);
     const loading = useStore(state => state.loading);
@@ -13,7 +14,13 @@ function HomeScreen() {
     const setNotificationActive = useStore(state => state.setNotificationActive);
     const [currentSecond, setCurrentSecond] = useState("0000");
     const [count, setCount] = useState(0);
-    let testData={"date":"10.01","subuh":"6:09","terbit":"8:07","dzuhur":"12:19","ashr":"14:00","maghrib":"21:08","isya":"22:06"}
+    let testData={"date":"10.01",
+                  "subuh":"6:09",
+                  "terbit":"8:07",
+                  "dzuhur":"12:19",
+                  "ashr":"14:00",
+                  "maghrib":"21:08",
+                  "isya":"22:06"}
     useEffect(() => {
         retrieveData();
         const startTime = () => {
@@ -113,20 +120,23 @@ function HomeScreen() {
                     //<Text>{calculateRemainingSeconds(data, item)}</Text>
                     prayerList.push(
                         <View style={styles.itemCurrent}>
-                            <Text>{item} {data[item]}</Text>
+                            <Text style={styles.itemsTextCurrent}>{item}</Text>
+                            <Text style={styles.itemsPrayerCurrent}>{data[item]}</Text>
                         </View>
                     )
                 } else if (item == nextPrayer && item !== "terbit") {
                     prayerList.push(
                         <View style={styles.itemNext}>
-                            <Text>{calculateRemainingSeconds(data, item)}</Text>
-                            <Text>{item} {data[item]}</Text>
+                            <Text style={styles.itemsText}>{calculateRemainingSeconds(data, item)}</Text>
+                            <Text style={styles.itemsText}>{item}</Text>
+                            <Text style={styles.itemsPrayer}>{data[item]}</Text>
                         </View>
                     )
                 } else {
                     prayerList.push(
                         <View style={styles.item}>
-                            <Text>{item} {data[item]}</Text>
+                            <Text style={styles.itemsText}>{item}</Text>
+                            <Text style={styles.itemsPrayer}>{data[item]}</Text>
                         </View>
                     )
                 }
@@ -138,19 +148,19 @@ function HomeScreen() {
     const test=[<Text>{currentSecond}</Text>]
     return (
         <View style={styles.container}>
+            <Text style={styles.title}>Salaam,</Text>
+            <Text style={styles.subText}>{data.date}.{currentYear}, {hijriDate}</Text>
             {loading ? (
                 <Text>Loading...</Text>
             ) : (
                 <View>
                     {notificationActive ? (
-                        <Text>Prayer Alarms is On</Text>
+                        <Text style={styles.alarmText}>Prayer Alarms is On</Text>
                     ) : (
-                        <Text>Prayer Alarms is Off</Text>
+                        <Text style={styles.alarmText}>Prayer Alarms is Off</Text>
                     )}
 
                     <Button title="Prayer Time Alarm" onPress={() => toggled(!notificationActive)}></Button>
-                    <Text style={styles.title}>{data.date}.{currentYear}</Text>
-                    <Text style={styles.title}>{hijriDate}</Text>
                     <Text>I have rendered {currentSecond} times!</Text>
                     <View style={styles.boxList}>
                         <FlatList
@@ -167,41 +177,87 @@ function HomeScreen() {
 }
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "grey",
-        padding: 10,
+        flex:1,
+        justifyContent: "left",
+        alignItems: "left",
+        backgroundColor: COLORS.primary,
+        padding: 15,
+
     },
     boxList: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "grey",
-        padding: 10,
+        justifyContent: "left",
+        alignItems: "left",
+        backgroundColor: COLORS.primary,
+        paddingTop: 20,
     },
+
     title: {
-        fontSize: 30,
+        fontSize: 22,
         fontWeight: "bold",
+        color: COLORS.black,
     },
     itemCurrent: {
-        backgroundColor: '#f9c2ff',
-        padding: 20,
-        marginVertical: 8,
-        marginHorizontal: 16,
+        backgroundColor: COLORS.secondary,
+        padding: 0,
+        marginVertical: 0,
+        marginHorizontal: 0,
+        borderRadius: 25,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
     itemNext: {
-        backgroundColor: 'blue',
-        padding: 20,
-        marginVertical: 8,
-        marginHorizontal: 16,
+        backgroundColor: COLORS.primary,
+        padding: 0,
+        marginVertical: 0,
+        marginHorizontal: 0,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
     item: {
-        backgroundColor: 'darkgrey',
-        padding: 10,
-        marginVertical: 8,
-        marginHorizontal: 16,
+        backgroundColor: COLORS.primary,
+        padding: 0,
+        marginVertical: 0,
+        marginHorizontal: 0,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
+    subText: {
+        fontSize: 15,
+        color: COLORS.black,
+    },
+    alarmText: {
+        fontSize: 15,
+        color: COLORS.black,
+        paddingTop: 10,
+    },
+    itemsText:{
+        color: COLORS.black,
+        fontSize: 16,
+        paddingLeft: 30,
+        paddingTop:10,
+        paddingBottom: 10,
+    },
+    itemsPrayer:{
+        color: COLORS.black,
+        fontSize: 16,
+        paddingTop:10,
+        paddingRight: 30,
+        paddingBottom: 10,
+    },
+    itemsTextCurrent:{
+        color: COLORS.white,
+        fontSize: 16,
+        paddingLeft: 30,
+        paddingTop:10,
+        paddingBottom: 10,
+    },
+    itemsPrayerCurrent:{
+        color: COLORS.white,
+        fontSize: 16,
+        paddingTop:10,
+        paddingRight: 30,
+        paddingBottom: 10,
+    }
 });
 
 export default HomeScreen;

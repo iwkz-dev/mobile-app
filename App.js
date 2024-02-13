@@ -36,21 +36,9 @@ const slides = [
   }
 ]
 
-export default function App() {
+export default function App() {  
 
-  /*return (
-    <NavigationContainer>
-    <RetrieveEvents></RetrieveEvents>
-    <BackgroundTask></BackgroundTask>
-    <PrayerTimeService></PrayerTimeService>
-    <HijriDateService></HijriDateService>
-      <Tab.Navigator>
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Calendar" component={CalenderScreen} />
-        <Tab.Screen name="ZakatDonasi" component={ZakatDonasiScreen}/>
-      </Tab.Navigator>
-    </NavigationContainer>
-  );*/
+
 
   const [showHomePage, setShowHomePage] = useState(false);
 
@@ -127,14 +115,17 @@ export default function App() {
     )
   }
 
-  return(
-    <View style={{
-      flex:1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    }}
-    >
-      <Text>Home screen</Text>
-    </View>
+  return (
+    <NavigationContainer>
+    <RetrieveEvents></RetrieveEvents>
+    <BackgroundTask></BackgroundTask>
+    <PrayerTimeService></PrayerTimeService>
+    <HijriDateService></HijriDateService>
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Calendar" component={CalenderScreen} />
+        <Tab.Screen name="ZakatDonasi" component={ZakatDonasiScreen}/>
+      </Tab.Navigator>
+    </NavigationContainer>
   )
 }
