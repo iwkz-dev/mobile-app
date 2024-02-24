@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { Text, View, Alert, StyleSheet, TouchableOpacity } from 'react-native';
 import { ExpandableCalendar, WeekCalendar, CalendarProvider, AgendaList } from 'react-native-calendars'
-import { calendarURL, apiKey } from '../utils/config';
 //ToBe deleted
-import { agendas, getMarkedDates, emptyCalendar } from '../components/calendars/agendaItems';
+import { agendas, getMarkedDates } from '../components/calendars/agendaItems';
 import AgendaItem from '../components/calendars/AgendaItem';
 import { getTheme, themeColor, lightThemeColor } from '../components/calendars/theme';
 
@@ -31,31 +30,22 @@ function CalenderScreen() {
     <CalendarProvider
       date={today}
       onDateChanged={onDateChanged}
-      // onMonthChange={onMonthChange}
-      // showTodayButton
-      // disabledOpacity={0.6}
       theme={todayBtnTheme.current}
-    // todayBottomMargin={16}
     >
       {weekView ? (
         <WeekCalendar markedDates={marked.current}  />
       ) : (
         <ExpandableCalendar
-          // hideArrows
           disablePan={true}
           closeOnDayPress={false}
           hideKnob={true}
           initialPosition={ExpandableCalendar.positions.OPEN}
-          // calendarStyle={styles.calendar}
-          // headerStyle={styles.header} // for horizontal only
           disableWeekScroll={true}
           theme={theme.current}
           disableAllTouchEventsForDisabledDays={true}
-          //firstDay={1}
           markedDates={marked.current}
           leftArrowImageSource={leftArrowIcon}
           rightArrowImageSource={rightArrowIcon}
-        // animateScroll
         />
       )}
       <AgendaList
@@ -66,7 +56,6 @@ function CalenderScreen() {
         avoidDateUpdates={true}
         scrollToNextEvent={false}
         sectionStyle={styles.section}
-      // dayFormat={'yyyy-MM-d'}
       />
     </CalendarProvider>
   );
