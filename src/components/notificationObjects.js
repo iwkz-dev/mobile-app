@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import notifee, { TimestampTrigger, TriggerType, AndroidChannel, RepeatFrequency, AndroidImportance } from '@notifee/react-native';
-import { enableReminders } from './notification';
+import { enableNotificationPermission } from './notificationPermission';
 export default function createNotificationObjects(prayerName, prayerTime) {
     console.log(prayerName + ": " + prayerTime);
-    setupSubuhNotification(prayerName, prayerTime);
+    setupNotification(prayerName, prayerTime);
 }
-async function setupSubuhNotification(prayerName, prayerTime) {
+async function setupNotification(prayerName, prayerTime) {
     const date = new Date(Date.now());
 
     const myArray = prayerTime.split(":");

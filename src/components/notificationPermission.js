@@ -3,7 +3,7 @@ import { Alert, Platform } from "react-native";
 import notifee, { TimestampTrigger, TriggerType, AndroidChannel, AuthorizationStatus } from '@notifee/react-native';
 
 //Checking permission to use deliver notification before checking the optimzation
-export const enableReminders = async () => {
+export const enableNotificationPermission = async () => {
     const hasPermissions = await checkPermissions();
     if (hasPermissions) {
         console.log('app has Permission, Checking Optimization');

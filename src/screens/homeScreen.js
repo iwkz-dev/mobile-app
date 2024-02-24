@@ -5,6 +5,7 @@ import { currentYear } from '../services/dateServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { backgroundEnabled } from '../utils/storage';
 import { disableAllNotifications } from '../components/notificationObjects';
+import { enableNotificationPermission } from '../components/notificationPermission';
 function HomeScreen() {
     const data = useStore(state => state.prayerTimes);
     const loading = useStore(state => state.loading);
@@ -13,7 +14,10 @@ function HomeScreen() {
     const setNotificationActive = useStore(state => state.setNotificationActive);
     const [currentSecond, setCurrentSecond] = useState("0000");
     const [count, setCount] = useState(0);
+    //TODO DELETE BELOW, this only for test by skipping data from API by creating custom prayer times
     let testData={"date":"10.01","subuh":"6:09","terbit":"8:07","dzuhur":"12:19","ashr":"14:00","maghrib":"21:08","isya":"22:06"}
+    
+    //After this Componenmount, it start by 
     useEffect(() => {
         retrieveData();
         const startTime = () => {
@@ -30,7 +34,7 @@ function HomeScreen() {
     }, [])
 
     //Check from storage if Backgroundfetch is enabled or not 
-    retrieveData = async () => {
+    const retrieveData = async () => {
         try {
             const value = await AsyncStorage.getItem('backgroundEnabled');
             const currentValue = JSON.parse(value); //Convert String to Boolean
@@ -44,8 +48,13 @@ function HomeScreen() {
             // Error retrieving data
         }
     }
-    toggled = async (value) => {
+    //ON-OFF Switch for Alarms
+    const toggled = async (value) => {
+        //Enabling Background Fetch
         backgroundEnabled(value)
+        //Asking for extra permission so app won't be killed
+        enableNotificationPermission()
+        //Enabling Alarm Notifications
         setNotificationActive(value)
         if (value == false) {
             disableAllNotifications();//Disabled all active Alarm
@@ -59,7 +68,6 @@ function HomeScreen() {
         const minutes = Math.floor((seconds % 3600) / 60);
         const remainingSeconds = seconds % 60;
         const testResult = hours + "h " + minutes + "m " + remainingSeconds + "s";
-        //console.log(testResult)
         return `${hours}h ${minutes}m ${remainingSeconds}s`;
     }
     function calculateRemainingSeconds(data, item) {
@@ -78,8 +86,6 @@ function HomeScreen() {
             (targetMinute - currentMinute) * 60 -
             currentS
         );
-        //console.log("currentHourMinute: " + currentHour+":"+currentMinute)
-        //console.log("targetHourMinute: " + targetHour+":"+targetMinute)
         return formatTime(testResult);
     }
     const getCurrentNextPrayer = data => {
@@ -132,10 +138,9 @@ function HomeScreen() {
                 }
             }
         }
-        console.log("currentPray: " + currentPrayer + " Next Pray: " + nextPrayer+" Current Second: "+currentSecond)
+        //console.log("currentPray: " + currentPrayer + " Next Pray: " + nextPrayer+" Current Second: "+currentSecond)
         return prayerList;
     }
-    const test=[<Text>{currentSecond}</Text>]
     return (
         <View style={styles.container}>
             {loading ? (
@@ -151,7 +156,6 @@ function HomeScreen() {
                     <Button title="Prayer Time Alarm" onPress={() => toggled(!notificationActive)}></Button>
                     <Text style={styles.title}>{data.date}.{currentYear}</Text>
                     <Text style={styles.title}>{hijriDate}</Text>
-                    <Text>I have rendered {currentSecond} times!</Text>
                     <View style={styles.boxList}>
                         <FlatList
                             data={createPrayerList(data)}
