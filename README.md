@@ -38,7 +38,7 @@ cd android
 
 cd ..
 
-Baru npm/yarn start
+npm/yarn start
 
 # Learn More
 
