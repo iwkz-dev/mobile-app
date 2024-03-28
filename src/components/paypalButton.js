@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { WebView } from 'react-native-webview';
 import { BackHandler, Platform, } from 'react-native';
+import PayPalButton from './src/components/paypalButton';
 
 const PayPalButton = () => {
     const webViewRef = useRef(null);
